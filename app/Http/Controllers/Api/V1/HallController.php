@@ -15,7 +15,7 @@ class HallController extends Controller
      */
     public function index()
     {
-        return HallResource::collection(Hall::all());
+        return HallResource::collection(Hall::paginate(20));
     }
 
     /**

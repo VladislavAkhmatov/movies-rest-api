@@ -15,7 +15,7 @@ class ScreeningController extends Controller
      */
     public function index()
     {
-        return ScreeningResource::collection(Screening::with('film', 'hall')->get());
+        return ScreeningResource::collection(Screening::with('film', 'hall')->paginate(20));
     }
 
     /**

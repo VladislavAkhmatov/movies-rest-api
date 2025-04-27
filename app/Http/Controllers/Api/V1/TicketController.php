@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Ticket\StoreTicketRequest;
 use App\Http\Requests\Ticket\UpdateTicketRequest;
+use App\Http\Resources\Api\V1\TicketResource;
 use App\Models\Ticket;
 
 class TicketController extends Controller
@@ -14,7 +15,7 @@ class TicketController extends Controller
      */
     public function index()
     {
-        //
+        return TicketResource::collection(Ticket::paginate(20)->load('screening', 'seat.hall'));
     }
 
     /**
@@ -22,7 +23,8 @@ class TicketController extends Controller
      */
     public function store(StoreTicketRequest $request)
     {
-        //
+        $ticket = Ticket::create($request->validated());
+        return new TicketResource($ticket->load('screening', 'seat.hall'));
     }
 
     /**
@@ -30,7 +32,7 @@ class TicketController extends Controller
      */
     public function show(Ticket $ticket)
     {
-        //
+        return new TicketResource($ticket->load('screening', 'seat.hall'));
     }
 
     /**
@@ -38,7 +40,8 @@ class TicketController extends Controller
      */
     public function update(UpdateTicketRequest $request, Ticket $ticket)
     {
-        //
+        $ticket->update($request->validated());
+        return new TicketResource($ticket->load('screening', 'seat.hall'));
     }
 
     /**
@@ -46,6 +49,7 @@ class TicketController extends Controller
      */
     public function destroy(Ticket $ticket)
     {
-        //
+        $ticket->delete();
+        return response()->json(null, 204);
     }
 }

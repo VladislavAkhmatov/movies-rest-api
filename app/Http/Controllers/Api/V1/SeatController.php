@@ -15,7 +15,7 @@ class SeatController extends Controller
      */
     public function index()
     {
-        return SeatResource::collection(Seat::all()->load('hall'));
+        return SeatResource::collection(Seat::paginate(20)->load('hall'));
     }
 
     /**
